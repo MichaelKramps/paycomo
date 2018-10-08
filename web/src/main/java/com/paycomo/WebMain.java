@@ -14,10 +14,10 @@ import org.apache.catalina.Context;
 
 @Controller
 @SpringBootApplication
-public class Main {
+public class WebMain {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(WebMain.class, args);
     }
 
     @Bean
