@@ -1,0 +1,16 @@
+subprojects {
+    plugins {
+        id 'org.springframework.boot' version '2.0.5.RELEASE'
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
