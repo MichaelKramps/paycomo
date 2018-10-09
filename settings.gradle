@@ -1,4 +1,5 @@
 rootProject.name = 'paycomo'
-include 'service'
-include 'web'
+include 'paycomo-domain'
+include 'paycomo-service'
+include 'paycomo-webapp'
 

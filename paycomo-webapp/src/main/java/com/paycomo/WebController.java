@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController {
 
-    @GetMapping("/hello")
-    public String helloWorld(){
-        System.out.println("hello, Michael");
-        return "hello";
+    @GetMapping("/form")
+    public String form(){
+        return "form";
     }
+
 }
