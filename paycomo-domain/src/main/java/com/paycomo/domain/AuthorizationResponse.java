@@ -1,4 +1,4 @@
-package com.paycomo;
+package com.paycomo.domain;
 
 public class AuthorizationResponse {
     private String response;

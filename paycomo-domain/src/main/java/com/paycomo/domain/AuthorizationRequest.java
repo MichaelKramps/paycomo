@@ -1,4 +1,4 @@
-package com.paycomo;
+package com.paycomo.domain;
 
 public class AuthorizationRequest {
     private String request;
