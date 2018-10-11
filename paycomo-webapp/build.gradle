@@ -4,6 +4,7 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springframework.boot'
 
 repositories {
     jcenter()
@@ -20,5 +21,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework:spring-web'
     implementation project(':paycomo-domain')
 }
