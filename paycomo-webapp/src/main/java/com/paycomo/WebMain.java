@@ -29,7 +29,7 @@ public class WebMain {
 
     @Bean
     public PaycomoClient paycomoClient(RestTemplate restTemplate){
-        return new PaycomoClient(restTemplate);
+        return new PaycomoClient(restTemplate());
     }
 
     @Bean
