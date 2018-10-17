@@ -17,7 +17,6 @@ public class FormController {
     @PostMapping("/testFormSubmission")
     @ResponseBody
     public AuthorizationResponse test(@RequestBody AuthorizationRequest request){
-        System.out.println("Kramps: " + request.getRequest());
         return client.restTest(request);
     }
 }
