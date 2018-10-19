@@ -1,17 +1,21 @@
 package com.paycomo.authorize;
 
-import com.paycomo.domain.AuthorizationRequest;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.security.SignatureException;
 
 public class XPayTokenTest {
     @Test
-    public void thisTest(){
-        XPayToken generate = new XPayToken();
-        AuthorizationRequest request = new AuthorizationRequest();
-        request.setRequest("Hello, Kate");
-        String xPayToken = generate.generateXPayToken("/test?apiKey=xxxyyyzzz", request, "abcdefg");
-        System.out.println(xPayToken);
+    public void canAuthenticateWithVisaApi(){
+        try {
+            String resourcePath = "helloworld";
+            String queryString = "apikey=YBGSOBWEFWM92WLQUWLU21J4gj3HWPDvR5BoZToCYSUypqEsY";
+            String sharedSecret = "9$D3{wKT-DIgOSj$bar/mIv1#$x2wd1RIOf2QTLH";
+            String xPayToken = XPayToken.generateXPayToken(resourcePath, queryString, "", sharedSecret);
+
+            HttpClient client 
+        } catch (SignatureException e){
+            e.printStackTrace();
+        }
     }
 }

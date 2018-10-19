@@ -1,38 +1,53 @@
 package com.paycomo.authorize;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.tomcat.util.codec.binary.Base64;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.math.BigInteger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.SignatureException;
 
 public class XPayToken {
-    public String generateXPayToken(String urlPath, Object body, String sharedKey){
-        long unixTime = System.currentTimeMillis() / 1000L;
-        ObjectMapper objectMapper = new ObjectMapper();
+        public static String generateXPayToken(String resourcePath, String queryString, String requestBody, String sharedSecret) throws SignatureException {
         try {
-            String requestBody = objectMapper.writeValueAsString(body);
-            String message = unixTime + urlPath + requestBody;
-
-            String token = "xv2:" + unixTime + ":" + sha256_HMAC(sharedKey, message);
+            String timestamp = timeStamp();
+            String beforeHash = timestamp + resourcePath + queryString + requestBody;
+            String hash = hmacSha256Digest(beforeHash, sharedSecret);
+            String token = "xv2:" + timestamp + ":" + hash;
             return token;
-        } catch(Exception e){
+        } catch (Exception e){
             e.printStackTrace();
-            return "error!!!";
+            return "";
         }
     }
 
-    private String sha256_HMAC(String key, String message){
-        try {
-            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
-            sha256_HMAC.init(secret_key);
+    private static String timeStamp() {
+        return String.valueOf(System.currentTimeMillis()/ 1000L);
+    }
 
-            String hash = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes()));
-            return hash;
-        } catch(Exception e){
-            e.printStackTrace();
-            return "error!!!";
+    private static String hmacSha256Digest(String data, String sharedSecret)
+            throws Exception {
+        return getDigest("HmacSHA256", sharedSecret, data, true);
+    }
+
+    private static String getDigest(String algorithm, String sharedSecret, String data,  boolean toLower) throws SignatureException {
+        try {
+            Mac sha256HMAC = Mac.getInstance(algorithm);
+            SecretKeySpec secretKey = new SecretKeySpec(sharedSecret.getBytes(StandardCharsets.UTF_8), algorithm);
+            sha256HMAC.init(secretKey);
+
+            byte[] hashByte = sha256HMAC.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            String hashString = toHex(hashByte);
+
+            return toLower ? hashString.toLowerCase() : hashString;
+        } catch (Exception e) {
+            throw new SignatureException(e);
         }
+    }
+
+    private static String toHex(byte[] bytes) {
+        BigInteger bi = new BigInteger(1, bytes);
+        return String.format("%0" + (bytes.length << 1) + "X", bi);
     }
 }
