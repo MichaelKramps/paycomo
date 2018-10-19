@@ -10,20 +10,29 @@ public class XPayToken {
     public String generateXPayToken(String urlPath, Object body, String sharedKey){
         long unixTime = System.currentTimeMillis() / 1000L;
         ObjectMapper objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(body);
+        try {
+            String requestBody = objectMapper.writeValueAsString(body);
+            String message = unixTime + urlPath + requestBody;
 
-        String message = unixTime + urlPath + requestBody;
-
-        String token = "xv2:" + unixTime + sha256_HMAC(sharedKey, message);
-        return token;
+            String token = "xv2:" + unixTime + ":" + sha256_HMAC(sharedKey, message);
+            return token;
+        } catch(Exception e){
+            e.printStackTrace();
+            return "error!!!";
+        }
     }
 
     private String sha256_HMAC(String key, String message){
-        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-        SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
-        sha256_HMAC.init(secret_key);
+        try {
+            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+            sha256_HMAC.init(secret_key);
 
-        String hash = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes()));
-        return hash;
+            String hash = Base64.encodeBase64String(sha256_HMAC.doFinal(message.getBytes()));
+            return hash;
+        } catch(Exception e){
+            e.printStackTrace();
+            return "error!!!";
+        }
     }
 }
