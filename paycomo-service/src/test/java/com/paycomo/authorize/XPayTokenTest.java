@@ -10,9 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import java.security.SignatureException;
 
 public class XPayTokenTest {
-    @Test
-    public void canAuthenticateWithVisaApi(){
-        try {
+//    @Test
+//    public void canAuthenticateWithVisaApi(){
+//        try {
 //            String resourcePath = "helloworld";
 //            String queryString = "apikey=YBGSOBWEFWM92WLQUWLU21J4gj3HWPDvR5BoZToCYSUypqEsY";
 //            String sharedSecret = "9$D3{wKT-DIgOSj$bar/mIv1#$x2wd1RIOf2QTLH";
@@ -33,10 +33,10 @@ public class XPayTokenTest {
 //        } catch (SignatureException e){
 //            e.printStackTrace();
 //        }
-    }
-
-    private class HelloResponse{
-        String timestamp;
-        String message;
-    }
+//    }
+//
+//    private class HelloResponse{
+//        String timestamp;
+//        String message;
+//    }
 }

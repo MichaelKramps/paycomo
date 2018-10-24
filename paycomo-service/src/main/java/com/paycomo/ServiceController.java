@@ -15,7 +15,6 @@ public class ServiceController {
     @ResponseBody
     public AuthorizationResponse test(@RequestBody AuthorizationRequest request){
         AuthorizationResponse response = new AuthorizationResponse();
-        response.setResponse(request.getRequest());
         return response;
     }
 }
