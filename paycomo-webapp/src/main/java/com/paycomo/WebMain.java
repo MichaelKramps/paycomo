@@ -1,5 +1,7 @@
 package com.paycomo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paycomo.authorize.XPayToken;
 import com.paycomo.submissions.PaycomoClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,8 +30,18 @@ public class WebMain {
     }
 
     @Bean
-    public PaycomoClient paycomoClient(RestTemplate restTemplate){
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
+    public PaycomoClient paycomoClient(){
         return new PaycomoClient(restTemplate());
+    }
+
+    @Bean
+    XPayToken xPayToken(){
+        return new XPayToken(objectMapper());
     }
 
     @Bean

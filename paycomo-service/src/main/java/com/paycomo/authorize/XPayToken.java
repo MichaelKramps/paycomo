@@ -2,14 +2,28 @@ package com.paycomo.authorize;
 
 //import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paycomo.domain.AuthorizationRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.math.BigInteger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.SignatureException;
 
+@Component
 public class XPayToken {
-        public static String generateXPayToken(String resourcePath, String queryString, String requestBody, String sharedSecret) throws SignatureException {
+    @Autowired
+    private ObjectMapper mapper;
+
+    public XPayToken(ObjectMapper mapper){
+        this.mapper = mapper;
+    }
+
+    public String generateXPayToken(String resourcePath, String queryString, String requestBody, String sharedSecret) throws SignatureException {
         try {
             String timestamp = timeStamp();
             String beforeHash = timestamp + resourcePath + queryString + requestBody;
@@ -17,6 +31,15 @@ public class XPayToken {
             String token = "xv2:" + timestamp + ":" + hash;
             return token;
         } catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String generateXPayToken(String resourcePath, String queryString, AuthorizationRequest request, String sharedSecret) throws SignatureException {
+        try {
+            return generateXPayToken(resourcePath, queryString, mapper.writeValueAsString(request), sharedSecret);
+        } catch (JsonProcessingException e){
             e.printStackTrace();
             return "";
         }
