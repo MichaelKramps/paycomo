@@ -2,6 +2,7 @@ package com.paycomo.domain;
 
 public class AmountDetails {
     private String totalAmount;
+    private String authorizedAmount;
     private String currency;
     private String discountAmount;
     private String dutyAmount;
@@ -135,5 +136,13 @@ public class AmountDetails {
 
     public void setSurchargeAmount(String surchargeAmount) {
         this.surchargeAmount = surchargeAmount;
+    }
+
+    public String getAuthorizedAmount() {
+        return authorizedAmount;
+    }
+
+    public void setAuthorizedAmount(String authorizedAmount) {
+        this.authorizedAmount = authorizedAmount;
     }
 }
