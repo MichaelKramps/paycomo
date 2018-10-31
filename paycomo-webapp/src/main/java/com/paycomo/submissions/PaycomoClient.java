@@ -13,7 +13,7 @@ public class PaycomoClient {
         this.client = restTemplate;
     }
 
-    public AuthorizationResponse restTest(AuthorizationRequest request){
+    public AuthorizationResponse requestAuthorization(AuthorizationRequest request){
         return client.postForObject("https://localhost:8090/test", request, AuthorizationResponse.class);
     }
 }

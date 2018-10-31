@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WebController {
 
-    @GetMapping("/form")
-    public String form(){
-        return "form";
+    @GetMapping("/authorize")
+    public String authorize(){
+        return "authorizationForm";
     }
 
 }

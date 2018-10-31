@@ -21,7 +21,7 @@ public class XPayTokenTest {
 
 
     @Before
-    public void createStuff(){
+    public void testPrep(){
         client = new RestTemplate();
         mapper = new ObjectMapper();
         xPayToken = new XPayToken(this.mapper);

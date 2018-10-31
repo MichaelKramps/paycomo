@@ -14,9 +14,9 @@ public class FormController {
     @Autowired
     private PaycomoClient client;
 
-    @PostMapping("/testFormSubmission")
+    @PostMapping("/requestAuthorization")
     @ResponseBody
-    public AuthorizationResponse test(@RequestBody AuthorizationRequest request){
-        return client.restTest(request);
+    public AuthorizationResponse requestAuthorization(@RequestBody AuthorizationRequest request){
+        return client.requestAuthorization(request);
     }
 }

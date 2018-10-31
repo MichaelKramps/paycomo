@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="" method="get" id="authorizationForm">
+        <h1>Make a Payment</h1>
+        <label>Payment Amount</label>
+        <input name="paymentAmount" id="paymentAmount"><br />
+        <label>Card Number</label>
+        <input name="cardNumber" id="cardNumber"><br />
+        <label>Card Expiration Date</label>
+        <input type="month" name="expiration" id="expiration"><br />
+        <label>Card Security Code</label>
+        <input name="securityCode" id="securityCode"><br />
+        <h2>Cardholder Info</h2>
+        <label>First Name</label>
+        <input name="firstName" id="firstName"><br />
+        <label>Last Name</label>
+        <input name="lastName" id="lastName"><br />
+        <label>Billing Address</label>
+        <input name="billingAddress" id="billingAddress"><br />
+        <label>Billing City</label>
+        <input name="billingCity" id="billingCity"><br />
+        <label>Billing State</label>
+        <input name="billingState" id="billingState"><br />
+        <label>Billing ZIP code</label>
+        <input name="billingZip" id="billingZip">
+        <input type="submit" value="Make Payment">
+    </form>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/authorizationForm.js"></script>
