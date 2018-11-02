@@ -8,8 +8,10 @@ $(document).ready(function() {
                     lastName: $("#lastName").val(),
                     address1: $("#billingAddress").val(),
                     locality: $("#billingCity").val(),
-                    district: $("#billingState").val(),
+                    administrativeArea: $("#billingState").val(),
                     postalCode: $("#billingZip").val(),
+                    email: $("#billingEmail").val(),
+                    country: "US"
                 },
                 amountDetails: {
                     totalAmount: $("#paymentAmount").val(),
@@ -25,15 +27,15 @@ $(document).ready(function() {
                 }
             }
         };
-//        $.ajax
-//        ({
-//            type: "POST",
-//            url: '/requestAuthorization',
-//            contentType: 'application/json',
-//            data: JSON.stringify(request),
-//            success: function (response) {
-//                console.log(response);
-//            }
-//        })
+        $.ajax
+        ({
+            type: "POST",
+            url: '/requestAuthorization',
+            contentType: 'application/json',
+            data: JSON.stringify(request),
+            success: function (response) {
+                console.log(response);
+            }
+        })
     });
 });

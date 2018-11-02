@@ -14,6 +14,6 @@ public class PaycomoClient {
     }
 
     public AuthorizationResponse requestAuthorization(AuthorizationRequest request){
-        return client.postForObject("https://localhost:8090/test", request, AuthorizationResponse.class);
+        return client.postForObject("https://localhost:8090/requestAuthorization", request, AuthorizationResponse.class);
     }
 }
