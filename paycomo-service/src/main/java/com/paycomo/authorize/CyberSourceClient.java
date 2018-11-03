@@ -46,10 +46,6 @@ public class CyberSourceClient {
 
     public AuthorizationResponse requestAuthorization(AuthorizationRequest request){
         try{
-            System.out.println(authorizationPath);
-            System.out.println(queryString);
-            System.out.println(sharedSecret);
-
             String token = xPayToken.generateXPayToken(authorizationPath, queryString, request, sharedSecret);
 
             System.out.println(token);

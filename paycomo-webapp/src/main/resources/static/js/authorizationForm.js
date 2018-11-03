@@ -30,7 +30,7 @@ $(document).ready(function() {
         $.ajax
         ({
             type: "POST",
-            url: '/requestAuthorization',
+            url: '/requestSale',
             contentType: 'application/json',
             data: JSON.stringify(request),
             success: function (response) {

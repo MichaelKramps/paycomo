@@ -19,4 +19,10 @@ public class FormController {
     public AuthorizationResponse requestAuthorization(@RequestBody AuthorizationRequest request){
         return client.requestAuthorization(request);
     }
+
+    @PostMapping("/requestSale")
+    @ResponseBody
+    public AuthorizationResponse requestSale(@RequestBody AuthorizationRequest request){
+        return client.requestSale(request);
+    }
 }

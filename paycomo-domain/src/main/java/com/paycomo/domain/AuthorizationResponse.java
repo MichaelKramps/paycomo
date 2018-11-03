@@ -5,6 +5,8 @@ public class AuthorizationResponse {
     private String submitTimeUtc;
     private String status;
     private String reconciliationId;
+    private String reason;
+    private String message;
     private Links _links;
     private Embedded _embedded;
     private ErrorInformation errorInformation;
@@ -108,5 +110,21 @@ public class AuthorizationResponse {
 
     public void setPointOfSaleInformation(PointOfSaleInformation pointOfSaleInformation) {
         this.pointOfSaleInformation = pointOfSaleInformation;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
