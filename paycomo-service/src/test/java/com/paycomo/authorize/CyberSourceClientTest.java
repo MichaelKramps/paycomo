@@ -4,67 +4,35 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paycomo.domain.authorize.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-public class XPayTokenTest {
-    RestTemplate client;
-    ObjectMapper mapper;
-    XPayToken xPayToken;
-    String apiKey = "YBGSOBWEFWM92WLQUWLU21J4gj3HWPDvR5BoZToCYSUypqEsY";
-    String queryString = "apikey=" + apiKey;
-    String sharedSecret = "9$D3{wKT-DIgOSj$bar/mIv1#$x2wd1RIOf2QTLH";
+import static org.junit.Assert.*;
 
+public class CyberSourceClientTest {
+
+    CyberSourceClient cyberSourceClient;
 
     @Before
     public void testPrep(){
-        client = new RestTemplate();
-        mapper = new ObjectMapper();
-        xPayToken = new XPayToken(this.mapper);
+        ObjectMapper objectMapper = new ObjectMapper();
+        cyberSourceClient = new CyberSourceClient(new RestTemplate(), objectMapper, new XPayToken(objectMapper));
     }
 
     @Test
-    public void paymentCanBeAuthorized(){
-        String resourcePath = "v2/payments";
-        AuthorizationRequest request = getValidRequest();
-        try {
-            String token = xPayToken.generateXPayToken(resourcePath, queryString, request, sharedSecret);
+    public void requestAuthorizationWorksWithValidRequest() {
+        AuthorizationResponse authorizationResponse = cyberSourceClient.requestAuthorization(getValidRequest());
 
-            String url = "https://sandbox.api.visa.com/cybersource/" + resourcePath;
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
-                    .queryParam("apikey", apiKey);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("x-pay-token", token);
-            HttpEntity<AuthorizationRequest> requestEntity = new HttpEntity<>(request, headers);
-
-            String result = client.exchange(builder.toUriString(), HttpMethod.POST, requestEntity, String.class).getBody();
-
-            AuthorizationResponse authorizationResponse = mapper.readValue(result, AuthorizationResponse.class);
-
-            assert(authorizationResponse.getStatus().equals("AUTHORIZED"));
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+        assert(authorizationResponse.getStatus().equals("AUTHORIZED"));
     }
 
     @Test
-    public void digestReturnsExpectedResultWithHmacSHA256(){
-        String sharedSecret = "secret";
-        String data = "{}";
-        String expected = "3569516392125be33b0eeb92a12b49c9907d1d8977a0a91fbb527306523a2030";
+    public void requestFlexibleTokenKey() {
+        assert(false);
+    }
 
-        try {
-            String result = xPayToken.hmacSha256Digest(sharedSecret, data);
-            assert(expected.equals(result));
-        } catch (Exception e){
-
-        }
+    @Test
+    public void cybersourceAuthorizedPostRequest() {
+        assert(false);
     }
 
     private AuthorizationRequest getValidRequest() {

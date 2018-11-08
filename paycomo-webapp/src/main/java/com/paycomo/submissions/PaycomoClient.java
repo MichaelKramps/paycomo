@@ -1,7 +1,7 @@
 package com.paycomo.submissions;
 
-import com.paycomo.domain.AuthorizationRequest;
-import com.paycomo.domain.AuthorizationResponse;
+import com.paycomo.domain.authorize.AuthorizationRequest;
+import com.paycomo.domain.authorize.AuthorizationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 

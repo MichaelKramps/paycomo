@@ -1,8 +1,10 @@
 package com.paycomo.authorize;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paycomo.domain.AuthorizationRequest;
-import com.paycomo.domain.AuthorizationResponse;
+import com.paycomo.domain.authorize.AuthorizationRequest;
+import com.paycomo.domain.authorize.AuthorizationResponse;
+import com.paycomo.domain.tokenize.FlexibleTokenKeyRequest;
+import com.paycomo.domain.tokenize.FlexibleTokenKeyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
@@ -31,6 +33,10 @@ public class CyberSourceClient {
     private String authorizationPath;
 
     @Autowired
+    @Qualifier("flexibleTokenKeyPath")
+    private String flexibleTokenKeyPath;
+
+    @Autowired
     @Qualifier("sharedSecret")
     private String sharedSecret;
 
@@ -46,12 +52,36 @@ public class CyberSourceClient {
 
     public AuthorizationResponse requestAuthorization(AuthorizationRequest request){
         try{
-            String token = xPayToken.generateXPayToken(authorizationPath, queryString, request, sharedSecret);
+            String response = cybersourceAuthorizedPostRequest(authorizationPath, request);
+            AuthorizationResponse authorizationResponse = mapper.readValue(response, AuthorizationResponse.class);
+
+            return authorizationResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+            return new AuthorizationResponse();
+        }
+    }
+
+    public FlexibleTokenKeyResponse requestFlexibleTokenKey(FlexibleTokenKeyRequest request){
+        try{
+            String response = cybersourceAuthorizedPostRequest(flexibleTokenKeyPath, request);
+            FlexibleTokenKeyResponse flexibleTokenKeyResponse = mapper.readValue(response, FlexibleTokenKeyResponse.class);
+
+            return flexibleTokenKeyResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+            return new FlexibleTokenKeyResponse();
+        }
+    }
+
+    public String cybersourceAuthorizedPostRequest(String path, Object request){
+        try{
+            String token = xPayToken.generateXPayToken(path, queryString, request, sharedSecret);
 
             System.out.println(token);
             System.out.println(mapper.writeValueAsString(request));
 
-            String url = "https://sandbox.api.visa.com/cybersource/" + authorizationPath;
+            String url = "https://sandbox.api.visa.com/cybersource/" + path;
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                     .queryParam("apikey", apiKey);
 
@@ -60,16 +90,14 @@ public class CyberSourceClient {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.set("x-pay-token", token);
-            HttpEntity<AuthorizationRequest> requestEntity = new HttpEntity<>(request, headers);
+            HttpEntity<Object> requestEntity = new HttpEntity<>(request, headers);
 
             String result = client.exchange(builder.toUriString(), HttpMethod.POST, requestEntity, String.class).getBody();
 
-            AuthorizationResponse authorizationResponse = mapper.readValue(result, AuthorizationResponse.class);
-
-            return authorizationResponse;
+            return result;
         } catch (Exception e){
             e.printStackTrace();
-            return new AuthorizationResponse();
+            return "";
         }
     }
 }

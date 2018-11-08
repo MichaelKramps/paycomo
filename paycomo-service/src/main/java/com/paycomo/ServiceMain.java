@@ -36,6 +36,11 @@ public class ServiceMain {
         return "v2/payments";
     }
 
+    @Bean(name="flexibleTokenKeyPath")
+    public String flexibleTokenKeyPath() {
+        return "payments/flex/v1/keys";
+    }
+
     @Bean(name="sharedSecret")
     public String sharedSecret() {
         return "9$D3{wKT-DIgOSj$bar/mIv1#$x2wd1RIOf2QTLH";

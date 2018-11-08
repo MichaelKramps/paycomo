@@ -4,7 +4,6 @@ package com.paycomo.authorize;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paycomo.domain.AuthorizationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +35,7 @@ public class XPayToken {
         }
     }
 
-    public String generateXPayToken(String resourcePath, String queryString, AuthorizationRequest request, String sharedSecret) throws SignatureException {
+    public String generateXPayToken(String resourcePath, String queryString, Object request, String sharedSecret) throws SignatureException {
         try {
             return generateXPayToken(resourcePath, queryString, mapper.writeValueAsString(request), sharedSecret);
         } catch (JsonProcessingException e){
