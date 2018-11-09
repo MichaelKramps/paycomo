@@ -2,6 +2,8 @@ package com.paycomo.authorize;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paycomo.domain.authorize.*;
+import com.paycomo.domain.tokenize.FlexibleTokenKeyRequest;
+import com.paycomo.domain.tokenize.FlexibleTokenKeyResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +17,16 @@ public class CyberSourceClientTest {
     @Before
     public void testPrep(){
         ObjectMapper objectMapper = new ObjectMapper();
-        cyberSourceClient = new CyberSourceClient(new RestTemplate(), objectMapper, new XPayToken(objectMapper));
+        String apiKey = "YBGSOBWEFWM92WLQUWLU21J4gj3HWPDvR5BoZToCYSUypqEsY";
+        cyberSourceClient = new CyberSourceClient(
+                new RestTemplate(),
+                objectMapper,
+                new XPayToken(objectMapper),
+                apiKey,
+                "v2/payments",
+                "payments/flex/v1/keys",
+                "9$D3{wKT-DIgOSj$bar/mIv1#$x2wd1RIOf2QTLH",
+                "apikey=" + apiKey);
     }
 
     @Test
@@ -27,12 +38,12 @@ public class CyberSourceClientTest {
 
     @Test
     public void requestFlexibleTokenKey() {
-        assert(false);
-    }
+        FlexibleTokenKeyRequest flexibleTokenKeyRequest = new FlexibleTokenKeyRequest();
+        flexibleTokenKeyRequest.setEncryptionType("RsaOaep256");
 
-    @Test
-    public void cybersourceAuthorizedPostRequest() {
-        assert(false);
+        FlexibleTokenKeyResponse response = cyberSourceClient.requestFlexibleTokenKey(flexibleTokenKeyRequest);
+
+        assert(response.getKeyId().length() > 0);
     }
 
     private AuthorizationRequest getValidRequest() {

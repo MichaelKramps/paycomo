@@ -50,6 +50,27 @@ public class CyberSourceClient {
         this.xPayToken = xPayToken;
     }
 
+    // currently used in unit tests
+    public CyberSourceClient(
+            RestTemplate restTemplate,
+            ObjectMapper mapper,
+            XPayToken xPayToken,
+            String apiKey,
+            String authorizationPath,
+            String flexibleTokenKeyPath,
+            String sharedSecret,
+            String queryString)
+    {
+        this.client = restTemplate;
+        this.mapper = mapper;
+        this.xPayToken = xPayToken;
+        this.apiKey = apiKey;
+        this.authorizationPath = authorizationPath;
+        this.flexibleTokenKeyPath = flexibleTokenKeyPath;
+        this.sharedSecret = sharedSecret;
+        this.queryString = queryString;
+    }
+
     public AuthorizationResponse requestAuthorization(AuthorizationRequest request){
         try{
             String response = cybersourceAuthorizedPostRequest(authorizationPath, request);
