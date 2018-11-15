@@ -5,6 +5,8 @@ import com.paycomo.domain.authorize.AuthorizationRequest;
 import com.paycomo.domain.authorize.AuthorizationResponse;
 import com.paycomo.domain.tokenize.FlexibleTokenKeyRequest;
 import com.paycomo.domain.tokenize.FlexibleTokenKeyResponse;
+import com.paycomo.domain.tokenize.TokenizedCardRequest;
+import com.paycomo.domain.tokenize.TokenizedCardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
@@ -29,12 +31,20 @@ public class CyberSourceClient {
     private String apiKey;
 
     @Autowired
+    @Qualifier("basePath")
+    private String basePath;
+
+    @Autowired
     @Qualifier("authorizationPath")
     private String authorizationPath;
 
     @Autowired
     @Qualifier("flexibleTokenKeyPath")
     private String flexibleTokenKeyPath;
+
+    @Autowired
+    @Qualifier("tokenizedCardPath")
+    private String tokenizedCardPath;
 
     @Autowired
     @Qualifier("sharedSecret")
@@ -95,6 +105,32 @@ public class CyberSourceClient {
         }
     }
 
+    public TokenizedCardResponse requestTokenizedCard(TokenizedCardRequest request){
+        try{
+            String response = cybersourceUnauthorizedPostRequest(tokenizedCardPath, request);
+            TokenizedCardResponse tokenizedCardResponse = mapper.readValue(response, TokenizedCardResponse.class);
+
+            return tokenizedCardResponse;
+        } catch (Exception e){
+            e.printStackTrace();
+            return new TokenizedCardResponse();
+        }
+    }
+
+    private String cybersourceUnauthorizedPostRequest(String path, Object request) {
+        String url = basePath + path;
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("apikey", apiKey);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> requestEntity = new HttpEntity<>(request, headers);
+
+        String result = client.exchange(builder.toUriString(), HttpMethod.POST, requestEntity, String.class).getBody();
+
+        return result;
+    }
+
     public String cybersourceAuthorizedPostRequest(String path, Object request){
         try{
             String token = xPayToken.generateXPayToken(path, queryString, request, sharedSecret);
@@ -102,7 +138,7 @@ public class CyberSourceClient {
             System.out.println(token);
             System.out.println(mapper.writeValueAsString(request));
 
-            String url = "https://sandbox.api.visa.com/cybersource/" + path;
+            String url = basePath + path;
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url)
                     .queryParam("apikey", apiKey);
 

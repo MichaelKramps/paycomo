@@ -31,9 +31,19 @@ public class ServiceMain {
         return new XPayToken(objectMapper());
     }
 
+    @Bean(name="basePath")
+    public String basePath() {
+        return "https://sandbox.api.visa.com/cybersource/";
+    }
+
     @Bean(name="authorizationPath")
     public String authorizationPath() {
         return "v2/payments";
+    }
+
+    @Bean(name="tokenizedCardPath")
+    public String tokenizedCardPath() {
+        return "payments/flex/v1/tokens";
     }
 
     @Bean(name="flexibleTokenKeyPath")

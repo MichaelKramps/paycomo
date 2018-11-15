@@ -7,15 +7,8 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 
 public class CardDataSerializer {
-    private final String derPublicKey;
-    private final String plainTextCardNumber;
 
-    public CardDataSerializer(String derPublicKey, String plainTextCardNumber){
-        this.derPublicKey = derPublicKey;
-        this.plainTextCardNumber = plainTextCardNumber;
-    }
-
-    public String getEncodedCardNumber() {
+    public static String getEncodedCardNumber(String derPublicKey, String plainTextCardNumber) {
         byte[] decodedKeyMaterial = derPublicKey.getBytes();
         try {
             PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decodedKeyMaterial));
