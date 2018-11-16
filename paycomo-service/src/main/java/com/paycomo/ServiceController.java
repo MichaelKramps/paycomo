@@ -35,7 +35,7 @@ public class ServiceController {
         return response;
     }
 
-    @PostMapping("/requestTokenizedAuthorization")
+    @PostMapping("/requestTokenizedCard")
     @ResponseBody
     public TokenizedCardResponse requestTokenizedCard(@RequestBody AuthorizationRequest request){
         FlexibleTokenKeyResponse flexibleTokenKeyResponse = client.requestFlexibleTokenKey(new FlexibleTokenKeyRequest());
@@ -44,7 +44,7 @@ public class ServiceController {
         TokenizedCardRequest tokenizedCardRequest = new TokenizedCardRequest();
         tokenizedCardRequest.setKeyId(flexibleTokenKeyResponse.getKeyId());
         CardInfo cardInfo = new CardInfo();
-        cardInfo.setCardNumber(request.getPaymentInformation().getCard().getNumber());
+        cardInfo.setCardNumber(encodedCardNumber);
         cardInfo.setCardExpirationMonth(request.getPaymentInformation().getCard().getExpirationMonth());
         cardInfo.setCardExpirationYear(request.getPaymentInformation().getCard().getExpirationYear());
         // needs to be looked into

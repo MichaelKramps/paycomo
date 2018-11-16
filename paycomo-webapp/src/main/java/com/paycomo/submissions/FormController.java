@@ -1,5 +1,7 @@
 package com.paycomo.submissions;
 
+import com.paycomo.domain.authorize.TokenizedCard;
+import com.paycomo.domain.tokenize.TokenizedCardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +25,16 @@ public class FormController {
     @PostMapping("/requestSale")
     @ResponseBody
     public AuthorizationResponse requestSale(@RequestBody AuthorizationRequest request){
+        return client.requestSale(request);
+    }
+
+    @PostMapping("/requestTokenizedSale")
+    @ResponseBody
+    public AuthorizationResponse requestTokenizedSale(@RequestBody AuthorizationRequest request){
+        TokenizedCardResponse tokenizedCardResponse = client.requestTokenizedCard(request);
+
+        request.getPaymentInformation().getTokenizedCard().setNumber(tokenizedCardResponse.getToken());
+
         return client.requestSale(request);
     }
 }

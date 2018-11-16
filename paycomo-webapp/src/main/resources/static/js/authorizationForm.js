@@ -20,7 +20,12 @@ $(document).ready(function() {
             },
             paymentInformation: {
                 card: {
-                    number: $("#cardNumber").val(),
+                    number: $("#cardNumber").val()/*,
+                    expirationYear: $("#expiration").val().substring(0,4),
+                    expirationMonth: $("#expiration").val().substring(5,7),
+                    securityCode: $("#securityCode").val()*/
+                },
+                tokenizedCard: {
                     expirationYear: $("#expiration").val().substring(0,4),
                     expirationMonth: $("#expiration").val().substring(5,7),
                     securityCode: $("#securityCode").val()

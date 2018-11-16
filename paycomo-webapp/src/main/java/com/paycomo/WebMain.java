@@ -35,7 +35,12 @@ public class WebMain {
 
     @Bean
     public PaycomoClient paycomoClient(){
-        return new PaycomoClient(restTemplate());
+        return new PaycomoClient(restTemplate(), paycomoServiceLocation());
+    }
+
+    @Bean(name="paycomoServiceLocation")
+    public String paycomoServiceLocation(){
+        return "https://localhost:8090";
     }
 
     @Bean
