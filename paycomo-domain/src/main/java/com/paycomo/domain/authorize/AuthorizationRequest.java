@@ -110,4 +110,57 @@ public class AuthorizationRequest {
     public void setMerchantDefinedInformation(MerchantDefinedInformation merchantDefinedInformation) {
         this.merchantDefinedInformation = merchantDefinedInformation;
     }
+
+    public String generateCardType() {
+        if (isVisa()){
+            return "001";
+        } else if (isMasterCard()){
+            return "002";
+        } else if (isAmericanExpress()){
+            return "003";
+        } else if (isDiscover()){
+            return "004";
+        }
+
+        return "";
+    }
+
+    private boolean isVisa(){
+        return passesDigitCheck(400000, 499999);
+    }
+
+    private boolean isMasterCard(){
+        return (passesLengthCheck(16) && (passesDigitCheck(510000, 559999) || passesDigitCheck(222100, 272099)));
+    }
+
+    private boolean isAmericanExpress(){
+        return (passesLengthCheck(15) && (passesDigitCheck(340000, 349999) || passesDigitCheck(370000, 379999)));
+    }
+
+    private boolean isDiscover(){
+        return (passesLengthCheck(16) &&
+                (passesDigitCheck(601100, 601109) ||
+                 passesDigitCheck(601120, 601149) ||
+                 passesDigitCheck(601174, 601174) ||
+                 passesDigitCheck(601177, 601179) ||
+                 passesDigitCheck(601186, 601199) ||
+                 passesDigitCheck(644000, 659999)));
+    }
+
+    private boolean passesLengthCheck(int cardLenth){
+        return getCardNumber().length() == cardLenth;
+    }
+
+    private boolean passesDigitCheck(int lowerLimit, int upperLimit){
+        int firstSixDigits = getFirstSixDigits();
+        return (firstSixDigits >= lowerLimit && firstSixDigits <= upperLimit);
+    }
+
+    private String getCardNumber(){
+        return this.getPaymentInformation().getTokenizedCard() != null ? this.getPaymentInformation().getTokenizedCard().getNumber() : this.getPaymentInformation().getCard().getNumber();
+    }
+
+    private int getFirstSixDigits(){
+        return Integer.parseInt(getCardNumber().substring(0, 6));
+    }
 }

@@ -47,8 +47,7 @@ public class ServiceController {
         cardInfo.setCardNumber(encodedCardNumber);
         cardInfo.setCardExpirationMonth(request.getPaymentInformation().getCard().getExpirationMonth());
         cardInfo.setCardExpirationYear(request.getPaymentInformation().getCard().getExpirationYear());
-        // needs to be looked into
-        cardInfo.setCardType("001");
+        cardInfo.setCardType(request.generateCardType()); // looks at the card number to determine the type of card being used
         tokenizedCardRequest.setCardInfo(cardInfo);
 
         TokenizedCardResponse tokenizedCardResponse = client.requestTokenizedCard(tokenizedCardRequest);
