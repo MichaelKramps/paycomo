@@ -6,6 +6,7 @@ import com.paycomo.domain.tokenize.*;
 import com.paycomo.tokenize.CardDataSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +34,13 @@ public class ServiceController {
         request.setProcessingInformation(processingInformation);
         AuthorizationResponse response = client.requestAuthorization(request);
         return response;
+    }
+
+    @GetMapping("/requestFlexibleTokenKey")
+    @ResponseBody
+    public FlexibleTokenKeyResponse requestFlexibleTokenKey(){
+        FlexibleTokenKeyResponse flexibleTokenKeyResponse = client.requestFlexibleTokenKey(new FlexibleTokenKeyRequest());
+        return flexibleTokenKeyResponse;
     }
 
     @PostMapping("/requestTokenizedCard")

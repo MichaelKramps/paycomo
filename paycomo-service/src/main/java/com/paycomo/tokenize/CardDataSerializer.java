@@ -18,6 +18,9 @@ public class CardDataSerializer {
             byte[] cipherText = oaepFromAlgo.doFinal(plainTextCardNumber.getBytes());
 
             String encoded = Base64.getEncoder().encodeToString(cipherText);
+
+            System.out.println(encoded);
+
             return encoded;
         } catch (Exception e){
             e.printStackTrace();
