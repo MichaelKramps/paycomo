@@ -37,4 +37,12 @@ public class FormController {
 
         return client.requestSale(request);
     }
+
+    @PostMapping("/stripe")
+    @ResponseBody
+    public String stripe(@RequestBody String request){
+        // stripeToken=tok_1DuJ72L1S8gXXiuCwUZawoZv&stripeTokenType=card&stripeEmail=mdk989%40gmail.com
+        System.out.println(request);
+        return request;
+    }
 }

@@ -11,4 +11,9 @@ public class WebController {
         return "authorizationForm";
     }
 
+    @GetMapping("/stripe")
+    public String stripe(){
+        return "stripe";
+    }
+
 }
