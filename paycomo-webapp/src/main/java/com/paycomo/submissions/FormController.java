@@ -1,6 +1,7 @@
 package com.paycomo.submissions;
 
 import com.paycomo.domain.authorize.TokenizedCard;
+import com.paycomo.domain.stripe.ChargeRequest;
 import com.paycomo.domain.tokenize.TokenizedCardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,9 +41,9 @@ public class FormController {
 
     @PostMapping("/stripe")
     @ResponseBody
-    public String stripe(@RequestBody String request){
+    public String stripe(@RequestBody ChargeRequest request){
         // stripeToken=tok_1DuJ72L1S8gXXiuCwUZawoZv&stripeTokenType=card&stripeEmail=mdk989%40gmail.com
-        System.out.println(request);
-        return request;
+        String response = client.requestStripeCharge(request);
+        return response;
     }
 }
